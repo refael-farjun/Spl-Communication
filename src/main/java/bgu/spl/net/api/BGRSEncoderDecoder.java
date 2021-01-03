@@ -5,8 +5,8 @@ public class BGRSEncoderDecoder implements MessageEncoderDecoder<Command>{
     private int len = 0;
     private String userName = null;
     private String password = null;
-    private short opCodeNum = 0; // maybe in both need to be -1 .. saw in Dolav office hours
-    private short courseNum = 0;
+    private short opCodeNum = -1; // maybe in both need to be -1 .. saw in Dolav office hours
+    private short courseNum = -1;
 
     @Override
     public Command decodeNextByte(byte nextByte) {
