@@ -16,6 +16,15 @@ public abstract class User {
     public String getPassword(){
         return this.password;
     }
+    public boolean isLoggedIn(){
+        return this.isLoggedIn;
+    }
+    public void logIn(){
+        this.isLoggedIn = true;
+    }
+    public void logOut(){
+        this.isLoggedIn = false;
+    }
 
 
 

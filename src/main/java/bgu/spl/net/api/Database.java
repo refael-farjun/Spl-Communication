@@ -19,7 +19,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class Database {
 	private static Database database = new Database();
 	private ArrayList<String> courses;
-	private ConcurrentHashMap<String, User>;
+	private ConcurrentHashMap<String, User> userConcurrentHashMap;
 
 
 	//to prevent user from creating new Database
