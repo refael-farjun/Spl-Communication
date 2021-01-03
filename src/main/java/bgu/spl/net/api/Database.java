@@ -6,6 +6,7 @@ import java.io.FileNotFoundException;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Passive object representing the Database where all courses and users are stored.
@@ -18,6 +19,7 @@ import java.util.Scanner;
 public class Database {
 	private static Database database = new Database();
 	private ArrayList<String> courses;
+	private ConcurrentHashMap<String, User>;
 
 
 	//to prevent user from creating new Database

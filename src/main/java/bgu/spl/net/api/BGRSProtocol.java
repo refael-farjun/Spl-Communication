@@ -1,13 +1,18 @@
 package bgu.spl.net.api;
 
+import bgu.spl.net.api.commands.LogoutCommand;
+
 public class BGRSProtocol implements MessagingProtocol<Command> {
+    private boolean shouldTerminate = false;
     @Override
     public Command process(Command msg) {
-        return null;
+        if (msg instanceof LogoutCommand)
+            shouldTerminate = true;
+        return msg.react();
     }
 
     @Override
     public boolean shouldTerminate() {
-        return false;
+        return shouldTerminate;
     }
 }
