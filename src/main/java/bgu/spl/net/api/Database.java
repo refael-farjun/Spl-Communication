@@ -3,6 +3,8 @@ package bgu.spl.net.api;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.nio.file.Files;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 /**
@@ -15,6 +17,7 @@ import java.util.Scanner;
  */
 public class Database {
 	private static Database database = new Database();
+	private ArrayList<String> courses;
 
 
 	//to prevent user from creating new Database
@@ -38,13 +41,16 @@ public class Database {
 	 */
 	boolean initialize(String coursesFilePath) {
 		// TODO: implement
+		courses = new ArrayList<>();
 		try{
 			File file = new File(coursesFilePath);
 			Scanner scanner = new Scanner(file);
 			while (scanner.hasNextLine()){
 				String line = scanner.nextLine();
+				courses.add(line);
 			}
 			scanner.close();
+			return true;
 		}
 		catch (FileNotFoundException e) {
 			System.out.println("An error occurred: File not found");
