@@ -11,6 +11,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 
 
+
 public class BGRSEncoderDecoder implements MessageEncoderDecoder<Command>{
     private byte[] bytes = new byte[1 << 10]; //start with 1k
     private int len = 0;
@@ -117,7 +118,7 @@ public class BGRSEncoderDecoder implements MessageEncoderDecoder<Command>{
         else if (opCodeNum == 3)
             return new LogInCommand(userName, password);
         else if (opCodeNum == 4)
-            return new LogOutCommand(userName, password);
+            return new LogOutCommand();
         else if (opCodeNum == 5)
             return new CourseRegCommand(courseNum);
         else if (opCodeNum == 6)
@@ -146,7 +147,50 @@ public class BGRSEncoderDecoder implements MessageEncoderDecoder<Command>{
 
     @Override
     public byte[] encode(Command message) {
-        return new byte[0];
+//        byte[] encMessage = new  byte[1 << 10];
+        if (message.opcode == 12) { //ACK Messege (Opcode 12)
+            if (((AckCommand) message).getOptional() == null) {
+                byte[] encMessege = new byte[5];
+                for (int i = 0; i < shortToBytes(message.opcode).length; i++) {
+                    encMessege[i] = (shortToBytes(message.opcode))[i];
+                }
+                for (int i = 2; i < shortToBytes(((AckCommand) message).getMessageOpCode()).length; i++) {
+                    encMessege[i] = (shortToBytes(((AckCommand) message).getMessageOpCode()))[i-2];
+                }
+
+                encMessege[4] = ("\0".getBytes())[0];
+                return encMessege;
+//                return (shortToBytes(message.opcode) + shortToBytes(((AckCommand) message).getMessageOpCode()) + (((AckCommand) message).getOptional()).getBytes() + "\0".getBytes()); //uses utf8 by default
+            }
+
+            else{
+                byte[] encMessege = new byte[5 + (((AckCommand) message).getOptional()).getBytes().length];
+                for (int i = 0; i < shortToBytes(message.opcode).length; i++) {
+                    encMessege[i] = (shortToBytes(message.opcode))[i];
+                }
+                for (int i = 2; i < shortToBytes(((AckCommand) message).getMessageOpCode()).length; i++) {
+                    encMessege[i] = (shortToBytes(((AckCommand) message).getMessageOpCode()))[i-2];
+                }
+                for (int i = 4; i < (((AckCommand) message).getOptional()).getBytes().length; i++){
+                    encMessege[i] = ((((AckCommand) message).getOptional()).getBytes())[i-4];
+                }
+
+                encMessege[4 + (((AckCommand) message).getOptional()).getBytes().length] = ("\0".getBytes())[0];
+                return encMessege;
+//                return (shortToBytes(message.opcode) + (ErrorCommand)message.getMessegeOpcode.getbytes());
+            }
+        }
+
+        else { //Error Messege (Opcode 13)
+            byte[] encMessege = new byte[4];
+            for (int i = 0; i < shortToBytes(message.opcode).length; i++) {
+                encMessege[i] = (shortToBytes(message.opcode))[i];
+            }
+            for (int i = 2; i < shortToBytes(((ErrorCommand) message).getMessageOpCode()).length; i++) {
+                encMessege[i] = (shortToBytes(((ErrorCommand) message).getMessageOpCode()))[i-2];
+            }
+            return encMessege;
+        }
     }
 
     public short bytesToShort(byte[] byteArr)
@@ -155,4 +199,13 @@ public class BGRSEncoderDecoder implements MessageEncoderDecoder<Command>{
         result += (short)(byteArr[1] & 0xff);
         return result;
     }
+
+    public byte[] shortToBytes(short num)
+    {
+        byte[] bytesArr = new byte[2];
+        bytesArr[0] = (byte)((num >> 8) & 0xFF);
+        bytesArr[1] = (byte)(num & 0xFF);
+        return bytesArr;
+    }
+
 }
