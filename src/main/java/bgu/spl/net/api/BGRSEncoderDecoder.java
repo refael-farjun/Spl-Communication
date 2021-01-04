@@ -128,7 +128,7 @@ public class BGRSEncoderDecoder implements MessageEncoderDecoder<Command>{
         else if (opCodeNum == 8)
             return new StudentStatCommand(userName);
         else if (opCodeNum == 9)
-            return new IsRegisterCommand(courseNum);
+            return new IsRegisteredCommand(courseNum);
         else if (opCodeNum == 10)
             return new MyCoursesCommand();
         else

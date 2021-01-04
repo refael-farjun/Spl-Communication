@@ -16,8 +16,8 @@ public class StudentStatCommand extends Command {
         if (database.getUserConcurrentHashMap().get(protocol.getCurUserName()) instanceof Admin){
             return new ErrorCommand(this.opcode); // err - not an Admin
         }
-        String studentStat = "Student: " + this.studentUserName + "\n":
-        studentStat += "Courses: " +
+        String studentStat = "Student: " + this.studentUserName + "\n";
+        studentStat += "Courses: ";
         return null;
     }
 }
