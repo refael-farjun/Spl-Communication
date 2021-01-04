@@ -5,7 +5,7 @@ import bgu.spl.net.api.Command;
 
 public class KdamCheckCommand extends Command {
     short courseNumber;
-    public KdamCheckCommand(){
+    public KdamCheckCommand(short courseNumber){
         this.courseNumber = courseNumber;
         this.opcode = 6;
     }
