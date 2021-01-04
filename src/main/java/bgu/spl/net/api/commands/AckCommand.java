@@ -21,9 +21,6 @@ public class AckCommand extends Command {
         return optional;
     }
 
-    public short getOpcode(){
-        return this.opcode;
-    }
 
     @Override
     public Command react(BGRSProtocol protocol) {

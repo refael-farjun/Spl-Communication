@@ -10,6 +10,11 @@ public class ErrorCommand extends Command {
         this.messageOpCode = messageOpCode;
         this.opcode = 13;
     }
+
+    public short getMessageOpCode() {
+        return messageOpCode;
+    }
+
     @Override
     public Command react(BGRSProtocol protocol) {
         return null;
