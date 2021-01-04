@@ -5,5 +5,5 @@ public abstract class Command {
     protected Database database = Database.getInstance();
 
 
-    public abstract Command react();
+    public abstract Command react(BGRSProtocol protocol);
 }

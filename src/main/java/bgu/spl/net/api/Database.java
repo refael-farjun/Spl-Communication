@@ -5,6 +5,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.nio.file.Files;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Scanner;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -18,16 +20,25 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class Database {
 	private static Database database = new Database();
-	private ArrayList<String> courses;
+	private HashMap<Short, ArrayList<String>> courses; // key is course number and the value is list of the rest details
 	private ConcurrentHashMap<String, User> userConcurrentHashMap;
 
 
 	//to prevent user from creating new Database
 	private Database() {
 		// TODO: implement
+		this.userConcurrentHashMap = new ConcurrentHashMap<>();
 
+	}
+	public HashMap<Short,  ArrayList<String>> getCourses(){
+		return this.courses;
+	}
 
-
+	public void addUser(User user) {
+		userConcurrentHashMap.put(user.getUserName(), user);
+	}
+	public ConcurrentHashMap<String, User> getUserConcurrentHashMap(){
+		return this.userConcurrentHashMap;
 	}
 
 	/**
@@ -43,13 +54,29 @@ public class Database {
 	 */
 	boolean initialize(String coursesFilePath) {
 		// TODO: implement
-		courses = new ArrayList<>();
+		courses = new HashMap<>();
 		try{
 			File file = new File(coursesFilePath);
 			Scanner scanner = new Scanner(file);
 			while (scanner.hasNextLine()){
 				String line = scanner.nextLine();
-				courses.add(line);
+				String num = "";
+				int i = 0;
+				while (line.charAt(i) != '|'){ // find course number and put as a key in the map
+					num += line.charAt(i);
+					i++;
+				}
+				short number = Short.parseShort(num);
+				courses.put(number, new ArrayList<>());
+				String str = "";
+				for (int j = i + 1; j < line.length(); j++){ // add values in the array list
+					if (line.charAt(j) == '|'){
+						courses.get(number).add(str);
+						str = "";
+					}
+					str += line.charAt(j);
+				}
+
 			}
 			scanner.close();
 			return true;
