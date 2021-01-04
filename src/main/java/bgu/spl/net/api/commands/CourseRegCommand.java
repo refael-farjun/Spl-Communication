@@ -20,13 +20,24 @@ public class CourseRegCommand extends Command {
     @Override
     public Command react(BGRSProtocol protocol) {
         if (!database.getCourses().containsKey(this.courseNumber)){
-            return null; // err
+            return null; // err no such course
+        }
+        if (database.getUserConcurrentHashMap().get(protocol.getCurUserName()) instanceof Admin){
+            return null; // err admin cant register to courses
         }
         //TODO data structure or decrement the max student - for seat open
-        if (database.getUserConcurrentHashMap().get(protocol.getCurUserName()) instanceof Student){
+        if (database.getStudentInCourses().get(this.courseNumber) >= getMaxSeat()){
+            return null; // err there is no seat left
+        }
+
+
+        else {
+        //if (database.getUserConcurrentHashMap().get(protocol.getCurUserName()) instanceof Student){
             if (database.getCourses().get(this.courseNumber).get(1).equals("[]")){
                 ((Student) database.getUserConcurrentHashMap().get(protocol.getCurUserName())).registerToCourse(this.courseNumber);
-                return null; // ack
+                checkAddCourse(); // check if there is student that rgisterd if not put new
+
+                return new AckCommand(this.opcode, null); // ack there is no kdam courses
             }
             ConcurrentLinkedQueue<Short> studentCourses = ((Student) database.getUserConcurrentHashMap().
                     get(protocol.getCurUserName())).getRegisteredCourses();
@@ -39,11 +50,11 @@ public class CourseRegCommand extends Command {
                 }
             }
             ((Student) database.getUserConcurrentHashMap().get(protocol.getCurUserName())).registerToCourse(this.courseNumber);
-            return null; // ack
+            checkAddCourse(); // check if there is student that rgisterd if not put new
+            return new AckCommand(this.opcode, null); // ack OK have all the kdam course
 
         }
 
-        return null; // err - user is admin
     }
     public int[] parseIntArray(String[] arr) {
         int[] ints = new int[arr.length];
@@ -51,5 +62,17 @@ public class CourseRegCommand extends Command {
             ints[i] = Integer.parseInt(arr[i]);
         }
         return ints;
+    }
+
+    public void checkAddCourse(){
+        if (database.getStudentInCourses().containsKey(this.courseNumber)){
+            database.getStudentInCourses().put(this.courseNumber, database.getStudentInCourses().get(this.courseNumber) + 1); // adding 1 to the coursses num
+        }
+        else
+            database.getStudentInCourses().put(this.courseNumber, 1);
+    }
+
+    public int getMaxSeat(){
+        return Integer.parseInt(database.getCourses().get(this.courseNumber).get(2));
     }
 }

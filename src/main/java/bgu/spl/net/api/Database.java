@@ -22,14 +22,21 @@ public class Database {
 	private static Database database = new Database();
 	private HashMap<Short, ArrayList<String>> courses; // key is course number and the value is list of the rest details
 	private ConcurrentHashMap<String, User> userConcurrentHashMap;
+	private ConcurrentHashMap<Short, Integer> studentInCourses;
 
 
 	//to prevent user from creating new Database
 	private Database() {
 		// TODO: implement
 		this.userConcurrentHashMap = new ConcurrentHashMap<>();
+		this.studentInCourses = new ConcurrentHashMap<>();
 
 	}
+
+	public ConcurrentHashMap<Short, Integer> getStudentInCourses() {
+		return studentInCourses;
+	}
+
 	public HashMap<Short,  ArrayList<String>> getCourses(){
 		return this.courses;
 	}
