@@ -20,14 +20,14 @@ public class CourseRegCommand extends Command {
     @Override
     public Command react(BGRSProtocol protocol) {
         if (!database.getCourses().containsKey(this.courseNumber)){
-            return null; // err no such course
+            return new ErrorCommand(this.opcode); // err no such course
         }
         if (database.getUserConcurrentHashMap().get(protocol.getCurUserName()) instanceof Admin){
-            return null; // err admin cant register to courses
+            return new ErrorCommand(this.opcode); // err admin cant register to courses
         }
         //TODO data structure or decrement the max student - for seat open
         if (database.getStudentInCourses().get(this.courseNumber) >= getMaxSeat()){
-            return null; // err there is no seat left
+            return new ErrorCommand(this.opcode); // err there is no seat left
         }
 
 
@@ -46,7 +46,7 @@ public class CourseRegCommand extends Command {
             int[] kadamCourses = parseIntArray(tempArr);
             for (int kdamCourse : kadamCourses){
                 if (!studentCourses.contains(kdamCourse)){
-                    return null; // err - not have all kdam courses
+                    return new ErrorCommand(this.opcode); // err - not have all kdam courses
                 }
             }
             ((Student) database.getUserConcurrentHashMap().get(protocol.getCurUserName())).registerToCourse(this.courseNumber);

@@ -11,6 +11,16 @@ public class KdamCheckCommand extends Command {
     }
     @Override
     public Command react(BGRSProtocol protocol) {
-        return null;
+        if (!database.getUserConcurrentHashMap().containsKey(protocol.getCurUserName()))
+            return new ErrorCommand(this.opcode);
+        if (!database.getCourses().containsKey(this.courseNumber))
+            return new ErrorCommand(this.opcode);
+
+        String kdamCourse = database.getCourses().get(this.courseNumber).get(1);
+
+        if (kdamCourse.equals("[]")){
+            kdamCourse = null;
+        }
+        return new AckCommand(this.opcode, kdamCourse);
     }
 }

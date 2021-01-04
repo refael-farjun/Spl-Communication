@@ -25,17 +25,17 @@ public class LogInCommand extends Command {
     @Override
     public Command react(BGRSProtocol protocol) {
         if (!database.getUserConcurrentHashMap().containsKey(this.userName)){ // if nor register
-            return null; // err
+            return new ErrorCommand(this.opcode); // err
 
         }
         if (!this.password.equals(database.getUserConcurrentHashMap().get(this.userName).getPassword())){ // wrong password
-            return null; // err
+            return new ErrorCommand(this.opcode); // err
         }
         if (database.getUserConcurrentHashMap().get(this.userName).isLoggedIn()){
-            return null; // err
+            return new ErrorCommand(this.opcode); // err
         }
         database.getUserConcurrentHashMap().get(this.userName).logIn();
 
-        return null; // ack
+        return new AckCommand(this.opcode, null); // ack
     }
 }

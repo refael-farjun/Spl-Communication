@@ -1,11 +1,26 @@
 package bgu.spl.net.api.commands;
 
+import bgu.spl.net.api.Admin;
 import bgu.spl.net.api.BGRSProtocol;
 import bgu.spl.net.api.Command;
 
 public class CourseStatCommand extends Command {
+    short courseNumber;
+
+    public CourseStatCommand(short courseNumber){
+        this.courseNumber = courseNumber;
+        this.opcode = 7;
+    }
     @Override
     public Command react(BGRSProtocol protocol) {
-        return null;
+        if (database.getUserConcurrentHashMap().get(protocol.getCurUserName()) instanceof Admin){
+            return new ErrorCommand(this.opcode); // err - not an Admin
+        }
+        String courseStat = "Course: (" + this.courseNumber + ") " + database.getCourses().get(this.courseNumber).get(0) + "\n";
+        courseStat += "Seat Available: " + database.getStudentInCourses().get(this.courseNumber) + "/";
+        courseStat += database.getCourses().get(this.courseNumber).get(2) + "\n";
+        courseStat += "Students Registered: " + database.getCourses().get(this.courseNumber).get(1);
+
+        return new AckCommand(this.opcode, courseStat);
     }
 }

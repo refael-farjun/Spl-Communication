@@ -13,9 +13,9 @@ public class LogOutCommand extends Command {
     @Override
     public Command react(BGRSProtocol protocol) {
         if (protocol.getCurUserName() == null && protocol.getCurPassword() == null) { // if no one logged in
-            return null; // err
+            return new ErrorCommand(this.opcode); // err
         }
-        return null; //ack
+        return new AckCommand(this.opcode, null); //ack
 
     }
 }

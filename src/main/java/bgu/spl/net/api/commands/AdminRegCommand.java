@@ -18,13 +18,13 @@ public class AdminRegCommand extends Command {
     @Override
     public Command react(BGRSProtocol protocol) {
         if (database.getUserConcurrentHashMap().containsKey(this.userName)){
-            return null; // err
+            return new ErrorCommand(this.opcode); // err
         }
         if (database.getUserConcurrentHashMap().get(this.userName) instanceof Student){
-            return null; // err
+            return new ErrorCommand(this.opcode); // err
         }
         database.addUser(new Admin(this.userName, this.password));
 
-        return null; // ack
+        return new AckCommand(this.opcode, null); // ack
     }
 }
