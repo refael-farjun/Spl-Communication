@@ -97,8 +97,8 @@ public class BGRSEncoderDecoder implements MessageEncoderDecoder<Command>{
                 return bytesToShort(bytes);
 
             }
-            return -1;
         }
+        return -1;
     }
 
 
