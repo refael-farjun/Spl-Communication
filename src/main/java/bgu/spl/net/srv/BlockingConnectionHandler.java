@@ -24,6 +24,7 @@ public class BlockingConnectionHandler<T> implements Runnable, ConnectionHandler
 
     @Override
     public void run() {
+        System.out.println("stating run func");
         try (Socket sock = this.sock) { //just for automatic closing
             int read;
 

@@ -27,7 +27,15 @@ public class BGRSEncoderDecoder implements MessageEncoderDecoder<Command>{
             if (len == 2){
                 opCodeNum = bytesToShort(bytes);
                 len = 0;
+                Command commandToSend = null;
+                if ( decodeByteByOpcodeNumber(nextByte)){
+                    commandToSend = getCommandByOpcode();
+                    reset();
+                }
+                return commandToSend;
+
             }
+
             return null;
         } //Opcode is int now
         else{
@@ -37,6 +45,7 @@ public class BGRSEncoderDecoder implements MessageEncoderDecoder<Command>{
                 reset();
             }
             return commandToSend;
+
         }
     }
 
