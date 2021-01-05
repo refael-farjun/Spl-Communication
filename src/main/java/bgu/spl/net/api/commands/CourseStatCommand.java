@@ -23,6 +23,7 @@ public class CourseStatCommand extends Command {
         for (String userName : database.getStudentInCourses().get(this.courseNumber)){
             courseStat += userName + ", ";
         }
+        courseStat = courseStat.substring(0, courseStat.length() - 1);
         courseStat += "]";
 
         return new AckCommand(this.opcode, courseStat);

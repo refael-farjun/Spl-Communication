@@ -31,6 +31,7 @@ public class StudentStatCommand extends Command {
                     studentStat += courseNum + ",";
                 }
             }
+            studentStat = studentStat.substring(0, studentStat.length() - 1);
             studentStat += "]";
         }
 
