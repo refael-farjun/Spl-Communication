@@ -17,9 +17,13 @@ public class CourseStatCommand extends Command {
             return new ErrorCommand(this.opcode); // err - not an Admin
         }
         String courseStat = "Course: (" + this.courseNumber + ") " + database.getCourses().get(this.courseNumber).get(0) + "\n";
-        courseStat += "Seat Available: " + database.getStudentInCourses().get(this.courseNumber) + "/";
+        courseStat += "Seat Available: " + database.getStudentInCourses().get(this.courseNumber).size() + "/";
         courseStat += database.getCourses().get(this.courseNumber).get(2) + "\n";
-        courseStat += "Students Registered: " + database.getCourses().get(this.courseNumber).get(1);
+        courseStat += "Students Registered: [" ;
+        for (String userName : database.getStudentInCourses().get(this.courseNumber)){
+            courseStat += userName + ", ";
+        }
+        courseStat += "]";
 
         return new AckCommand(this.opcode, courseStat);
     }

@@ -7,6 +7,11 @@ public class BGRSProtocol implements MessagingProtocol<Command> {
     private boolean shouldTerminate = false;
     private String curUserName = null;
     private String curPassword = null;
+    Database database;
+
+    public BGRSProtocol(Database database){
+        this.database = database;
+    }
     @Override
     public Command process(Command msg) {
         if (msg instanceof LogOutCommand){

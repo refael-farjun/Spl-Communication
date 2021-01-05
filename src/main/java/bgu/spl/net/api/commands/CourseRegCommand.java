@@ -7,6 +7,7 @@ import bgu.spl.net.api.Student;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.stream.Stream;
 
@@ -26,7 +27,7 @@ public class CourseRegCommand extends Command {
             return new ErrorCommand(this.opcode); // err admin cant register to courses
         }
         //TODO data structure or decrement the max student - for seat open
-        if (database.getStudentInCourses().get(this.courseNumber) >= getMaxSeat()){
+        if (database.getStudentInCourses().get(this.courseNumber).size() >= getMaxSeat()){
             return new ErrorCommand(this.opcode); // err there is no seat left
         }
 
@@ -35,7 +36,7 @@ public class CourseRegCommand extends Command {
         //if (database.getUserConcurrentHashMap().get(protocol.getCurUserName()) instanceof Student){
             if (database.getCourses().get(this.courseNumber).get(1).equals("[]")){
                 ((Student) database.getUserConcurrentHashMap().get(protocol.getCurUserName())).registerToCourse(this.courseNumber);
-                checkAddCourse(); // check if there is student that rgisterd if not put new
+                checkAddCourse(protocol.getCurUserName()); // check if there is student that rgisterd if not put new
 
                 return new AckCommand(this.opcode, null); // ack there is no kdam courses
             }
@@ -50,7 +51,7 @@ public class CourseRegCommand extends Command {
                 }
             }
             ((Student) database.getUserConcurrentHashMap().get(protocol.getCurUserName())).registerToCourse(this.courseNumber);
-            checkAddCourse(); // check if there is student that rgisterd if not put new
+            checkAddCourse(protocol.getCurUserName()); // check if there is student that rgisterd if not put new
             return new AckCommand(this.opcode, null); // ack OK have all the kdam course
 
         }
@@ -64,12 +65,12 @@ public class CourseRegCommand extends Command {
         return ints;
     }
 
-    public void checkAddCourse(){
+    public void checkAddCourse(String userName){
         if (database.getStudentInCourses().containsKey(this.courseNumber)){
-            database.getStudentInCourses().put(this.courseNumber, database.getStudentInCourses().get(this.courseNumber) + 1); // adding 1 to the coursses num
+            database.getStudentInCourses().get(this.courseNumber).add(userName); // adding user name to the courses list
         }
         else
-            database.getStudentInCourses().put(this.courseNumber, 1);
+            database.getStudentInCourses().put(this.courseNumber, new ArrayList<String>(Collections.singletonList(userName)));
     }
 
     public int getMaxSeat(){

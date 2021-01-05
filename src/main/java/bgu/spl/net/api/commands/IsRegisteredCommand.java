@@ -8,10 +8,14 @@ public class IsRegisteredCommand extends Command {
 
     public IsRegisteredCommand(short courseNumber){
         this.courseNumber = courseNumber;
-        this.opcode = 5;
+        this.opcode = 9;
     }
     @Override
     public Command react(BGRSProtocol protocol) {
-        return null;
+        if (database.getUserConcurrentHashMap().containsKey(protocol.getCurUserName()))
+            return new AckCommand(this.opcode, "REGISTERED");
+        else
+            return new AckCommand(this.opcode, "NOT REGISTERED");
+
     }
 }

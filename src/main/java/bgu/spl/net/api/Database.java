@@ -22,7 +22,7 @@ public class Database {
 	private static Database database = new Database();
 	private HashMap<Short, ArrayList<String>> courses; // key is course number and the value is list of the rest details
 	private ConcurrentHashMap<String, User> userConcurrentHashMap;
-	private ConcurrentHashMap<Short, Integer> studentInCourses;
+	private ConcurrentHashMap<Short, ArrayList<String>> studentInCourses;
 
 
 	//to prevent user from creating new Database
@@ -33,7 +33,7 @@ public class Database {
 
 	}
 
-	public ConcurrentHashMap<Short, Integer> getStudentInCourses() {
+	public ConcurrentHashMap<Short, ArrayList<String>> getStudentInCourses() {
 		return studentInCourses;
 	}
 
