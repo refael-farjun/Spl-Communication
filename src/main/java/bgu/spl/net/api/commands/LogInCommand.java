@@ -11,7 +11,7 @@ public class LogInCommand extends Command {
     public LogInCommand(String userName, String password){
         this.userName = userName;
         this.password = password;
-        this.opcode = 1;
+        this.opcode = 3;
     }
 
     public String getPassword() {
