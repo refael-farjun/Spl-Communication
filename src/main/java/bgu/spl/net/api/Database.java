@@ -30,6 +30,7 @@ public class Database {
 		// TODO: implement
 		this.userConcurrentHashMap = new ConcurrentHashMap<>();
 		this.studentInCourses = new ConcurrentHashMap<>();
+		initialize("/home/spl211/Assignment3/Courses.txt");
 
 	}
 

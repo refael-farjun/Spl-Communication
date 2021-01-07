@@ -27,12 +27,12 @@ public class BGRSEncoderDecoder implements MessageEncoderDecoder<Command>{
             if (len == 2){
                 opCodeNum = bytesToShort(bytes);
                 len = 0;
-                Command commandToSend = null;
-                if ( decodeByteByOpcodeNumber(nextByte)){
-                    commandToSend = getCommandByOpcode();
-                    reset();
-                }
-                return commandToSend;
+//                Command commandToSend = null;
+//                if ( decodeByteByOpcodeNumber(nextByte)){
+//                    commandToSend = getCommandByOpcode();
+//                    reset();
+//                }
+//                return commandToSend;
 
             }
 
@@ -98,16 +98,16 @@ public class BGRSEncoderDecoder implements MessageEncoderDecoder<Command>{
         }
     }
 
-    private short decodeCourseNum(byte nextByte){  //Not sure
+    private void decodeCourseNum(byte nextByte){  //Not sure
         if (courseNum == -1) {
             bytes[len++] = nextByte;
             if (len == 2){
                 len = 0;
-                return bytesToShort(bytes);
+                courseNum = bytesToShort(bytes);
 
             }
         }
-        return -1;
+
     }
 
 
