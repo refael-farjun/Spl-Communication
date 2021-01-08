@@ -82,7 +82,7 @@ public class BGRSEncoderDecoder implements MessageEncoderDecoder<Command>{
             pushByte(nextByte);
         }
         else {
-            userName = new String(bytes, 1, len, StandardCharsets.UTF_8);
+            userName = new String(bytes, 0, len, StandardCharsets.UTF_8);
             len = 0;
         }
     }
