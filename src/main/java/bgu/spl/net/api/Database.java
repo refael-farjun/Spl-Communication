@@ -81,6 +81,7 @@ public class Database {
 					if (line.charAt(j) == '|'){
 						courses.get(number).add(str);
 						str = "";
+						continue;
 					}
 					str += line.charAt(j);
 				}

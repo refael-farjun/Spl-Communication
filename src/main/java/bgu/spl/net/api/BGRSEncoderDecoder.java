@@ -164,8 +164,9 @@ public class BGRSEncoderDecoder implements MessageEncoderDecoder<Command>{
                 for (int i = 0; i < shortToBytes(message.opcode).length; i++) {
                     encMessege[i] = (shortToBytes(message.opcode))[i];
                 }
-                for (int i = 2; i < shortToBytes(((AckCommand) message).getMessageOpCode()).length; i++) {
-                    encMessege[i] = (shortToBytes(((AckCommand) message).getMessageOpCode()))[i-2];
+                for (int i = 0; i < shortToBytes(((AckCommand) message).getMessageOpCode()).length; i++) {
+                    encMessege[i + 2] = (shortToBytes(((AckCommand) message).getMessageOpCode()))[i];
+
                 }
 
                 encMessege[4] = ("\0".getBytes())[0];
@@ -178,11 +179,11 @@ public class BGRSEncoderDecoder implements MessageEncoderDecoder<Command>{
                 for (int i = 0; i < shortToBytes(message.opcode).length; i++) {
                     encMessege[i] = (shortToBytes(message.opcode))[i];
                 }
-                for (int i = 2; i < shortToBytes(((AckCommand) message).getMessageOpCode()).length; i++) {
-                    encMessege[i] = (shortToBytes(((AckCommand) message).getMessageOpCode()))[i-2];
+                for (int i = 0; i < shortToBytes(((AckCommand) message).getMessageOpCode()).length; i++) {
+                    encMessege[i + 2] = (shortToBytes(((AckCommand) message).getMessageOpCode()))[i];
                 }
-                for (int i = 4; i < (((AckCommand) message).getOptional()).getBytes().length; i++){
-                    encMessege[i] = ((((AckCommand) message).getOptional()).getBytes())[i-4];
+                for (int i = 0; i < (((AckCommand) message).getOptional()).getBytes().length; i++){
+                    encMessege[i + 4] = ((((AckCommand) message).getOptional()).getBytes())[i];
                 }
 
                 encMessege[4 + (((AckCommand) message).getOptional()).getBytes().length] = ("\0".getBytes())[0];
@@ -196,8 +197,8 @@ public class BGRSEncoderDecoder implements MessageEncoderDecoder<Command>{
             for (int i = 0; i < shortToBytes(message.opcode).length; i++) {
                 encMessege[i] = (shortToBytes(message.opcode))[i];
             }
-            for (int i = 2; i < shortToBytes(((ErrorCommand) message).getMessageOpCode()).length; i++) {
-                encMessege[i] = (shortToBytes(((ErrorCommand) message).getMessageOpCode()))[i-2];
+            for (int i = 0; i < shortToBytes(((ErrorCommand) message).getMessageOpCode()).length; i++) {
+                encMessege[i + 2] = (shortToBytes(((ErrorCommand) message).getMessageOpCode()))[i];
             }
             return encMessege;
         }
