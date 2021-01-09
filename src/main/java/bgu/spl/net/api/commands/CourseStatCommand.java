@@ -3,6 +3,7 @@ package bgu.spl.net.api.commands;
 import bgu.spl.net.api.Admin;
 import bgu.spl.net.api.BGRSProtocol;
 import bgu.spl.net.api.Command;
+import bgu.spl.net.api.Student;
 
 public class CourseStatCommand extends Command {
     short courseNumber;
@@ -13,17 +14,23 @@ public class CourseStatCommand extends Command {
     }
     @Override
     public Command react(BGRSProtocol protocol) {
-        if (database.getUserConcurrentHashMap().get(protocol.getCurUserName()) instanceof Admin){
+        if (database.getUserConcurrentHashMap().get(protocol.getCurUserName()) instanceof Student){
             return new ErrorCommand(this.opcode); // err - not an Admin
         }
         String courseStat = "Course: (" + this.courseNumber + ") " + database.getCourses().get(this.courseNumber).get(0) + "\n";
-        courseStat += "Seat Available: " + database.getStudentInCourses().get(this.courseNumber).size() + "/";
+        if (database.getStudentInCourses().contains(this.courseNumber))
+            courseStat += "Seat Available: " + database.getStudentInCourses().get(this.courseNumber).size() + "/";
+        else
+            courseStat += "Seat Available: " + "0" + "/";
         courseStat += database.getCourses().get(this.courseNumber).get(2) + "\n";
         courseStat += "Students Registered: [" ;
-        for (String userName : database.getStudentInCourses().get(this.courseNumber)){
-            courseStat += userName + ", ";
+        if (database.getStudentInCourses().contains(this.courseNumber)){
+            for (String userName : database.getStudentInCourses().get(this.courseNumber)){
+                courseStat += userName + ", ";
+            }
+            courseStat = courseStat.substring(0, courseStat.length() - 1);
         }
-        courseStat = courseStat.substring(0, courseStat.length() - 1);
+
         courseStat += "]";
 
         return new AckCommand(this.opcode, courseStat);

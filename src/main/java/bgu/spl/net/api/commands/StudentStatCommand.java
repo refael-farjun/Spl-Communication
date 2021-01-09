@@ -16,9 +16,11 @@ public class StudentStatCommand extends Command {
     }
     @Override
     public Command react(BGRSProtocol protocol) {
-        if (database.getUserConcurrentHashMap().get(protocol.getCurUserName()) instanceof Admin){
+        if (database.getUserConcurrentHashMap().get(protocol.getCurUserName()) instanceof Student){
             return new ErrorCommand(this.opcode); // err - not an Admin
         }
+        if (!database.getUserConcurrentHashMap().contains(this.studentUserName))
+            return new ErrorCommand(this.opcode); // not had any student with this user name
         String studentStat = "Student: " + this.studentUserName + "\n";
         studentStat += "Courses: [";
         ConcurrentLinkedQueue<Short> registeredCourses =

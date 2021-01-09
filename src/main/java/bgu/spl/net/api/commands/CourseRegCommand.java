@@ -23,14 +23,14 @@ public class CourseRegCommand extends Command {
         if (!database.getCourses().containsKey(this.courseNumber)){
             return new ErrorCommand(this.opcode); // err no such course
         }
-        if (database.getUserConcurrentHashMap().get(protocol.getCurUserName()) instanceof Admin){
+        else if (database.getUserConcurrentHashMap().get(protocol.getCurUserName()) instanceof Admin){
             return new ErrorCommand(this.opcode); // err admin cant register to courses
         }
         //TODO data structure or decrement the max student - for seat open
-        if (database.getStudentInCourses().get(this.courseNumber).size() >= getMaxSeat()){
+        else if (database.getStudentInCourses().contains(this.courseNumber) &&
+                database.getStudentInCourses().get(this.courseNumber).size() >= getMaxSeat()){
             return new ErrorCommand(this.opcode); // err there is no seat left
         }
-
 
         else {
         //if (database.getUserConcurrentHashMap().get(protocol.getCurUserName()) instanceof Student){
@@ -44,8 +44,9 @@ public class CourseRegCommand extends Command {
                     get(protocol.getCurUserName())).getRegisteredCourses();
             String str = database.getCourses().get(this.courseNumber).get(1);
             String[] tempArr = str.substring(1, str.length()-1).split(",");
-            int[] kadamCourses = parseIntArray(tempArr);
-            for (int kdamCourse : kadamCourses){
+
+            short[] kadamCourses = parseShortArray(tempArr);
+            for (short kdamCourse : kadamCourses){
                 if (!studentCourses.contains(kdamCourse)){
                     return new ErrorCommand(this.opcode); // err - not have all kdam courses
                 }
@@ -57,12 +58,12 @@ public class CourseRegCommand extends Command {
         }
 
     }
-    public int[] parseIntArray(String[] arr) {
-        int[] ints = new int[arr.length];
-        for (int i = 0; i < ints.length; i++) {
-            ints[i] = Integer.parseInt(arr[i]);
+    public short[] parseShortArray(String[] arr) {
+        short[] kadamCourses = new short[arr.length];
+        for (int i = 0; i < kadamCourses.length; i++){
+            kadamCourses[i] = Short.parseShort(arr[i]);
         }
-        return ints;
+        return kadamCourses;
     }
 
     public void checkAddCourse(String userName){

@@ -85,6 +85,7 @@ public class Database {
 					}
 					str += line.charAt(j);
 				}
+				courses.get(number).add(str);
 
 			}
 			scanner.close();
