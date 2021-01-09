@@ -20,17 +20,17 @@ public class CourseStatCommand extends Command {
         if (!database.getCourses().containsKey(this.courseNumber))
             return new ErrorCommand(this.opcode); // err - no such course
         String courseStat = "Course: (" + this.courseNumber + ") " + database.getCourses().get(this.courseNumber).get(0) + "\n";
-        if (database.getStudentInCourses().contains(this.courseNumber))
+        if (database.getStudentInCourses().containsKey(this.courseNumber))
             courseStat += "Seat Available: " + database.getStudentInCourses().get(this.courseNumber).size() + "/";
         else
             courseStat += "Seat Available: " + "0" + "/";
         courseStat += database.getCourses().get(this.courseNumber).get(2) + "\n";
         courseStat += "Students Registered: [" ;
-        if (database.getStudentInCourses().contains(this.courseNumber)){
+        if (database.getStudentInCourses().containsKey(this.courseNumber)){
             for (String userName : database.getStudentInCourses().get(this.courseNumber)){
                 courseStat += userName + ", ";
             }
-            courseStat = courseStat.substring(0, courseStat.length() - 1);
+            courseStat = courseStat.substring(0, courseStat.length() - 2);
         }
 
         courseStat += "]";

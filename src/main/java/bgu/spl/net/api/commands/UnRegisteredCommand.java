@@ -1,5 +1,6 @@
 package bgu.spl.net.api.commands;
 
+import bgu.spl.net.api.Admin;
 import bgu.spl.net.api.BGRSProtocol;
 import bgu.spl.net.api.Command;
 import bgu.spl.net.api.Student;
@@ -13,6 +14,9 @@ public class UnRegisteredCommand extends Command {
     }
     @Override
     public Command react(BGRSProtocol protocol) {
+        if (database.getUserConcurrentHashMap().get(protocol.getCurUserName()) instanceof Admin) {
+            return new ErrorCommand(this.opcode); // err admin cant send this command
+        }
         // check if there is any courses that the student is registered to
         if (((Student) database.getUserConcurrentHashMap().get(protocol.getCurUserName())).getRegisteredCourses().isEmpty())
             return new ErrorCommand(this.opcode);

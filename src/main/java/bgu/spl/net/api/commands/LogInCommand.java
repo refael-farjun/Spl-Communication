@@ -29,10 +29,10 @@ public class LogInCommand extends Command {
 
         }
         if (!this.password.equals(database.getUserConcurrentHashMap().get(this.userName).getPassword())){ // wrong password
-            return new ErrorCommand(this.opcode); // err
+            return new ErrorCommand(this.opcode); // err - WRONG PASSWORD
         }
         if (database.getUserConcurrentHashMap().get(this.userName).isLoggedIn()){
-            return new ErrorCommand(this.opcode); // err
+            return new ErrorCommand(this.opcode); // err - ALREADY LOGIN
         }
         database.getUserConcurrentHashMap().get(this.userName).logIn();
 

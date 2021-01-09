@@ -18,14 +18,18 @@ public class StudentRegCommand extends Command {
 
         @Override
     public Command react(BGRSProtocol protocol) {
-            if (database.getUserConcurrentHashMap().containsKey(this.userName)){
-                return new ErrorCommand(this.opcode); // err already registered
-            }
-            if (database.getUserConcurrentHashMap().get(this.userName) instanceof Admin){
-                return new ErrorCommand(this.opcode); // err - admin try to registered as a student
-            }
-            database.addUser(new Student(this.userName, this.password));
+        if (protocol.getCurUserName() != null && protocol.getCurPassword() != null) { // if no one logged in
+            return new ErrorCommand(this.opcode); // err - someone already connected
+        }
 
-            return new AckCommand(this.opcode, null);
+        if (database.getUserConcurrentHashMap().containsKey(this.userName)){
+            return new ErrorCommand(this.opcode); // err already registered
+        }
+        if (database.getUserConcurrentHashMap().get(this.userName) instanceof Admin){
+            return new ErrorCommand(this.opcode); // err - admin try to registered as a student
+        }
+        database.addUser(new Student(this.userName, this.password));
+
+        return new AckCommand(this.opcode, null);
     }
 }

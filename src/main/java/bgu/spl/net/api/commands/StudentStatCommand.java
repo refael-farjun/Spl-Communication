@@ -19,21 +19,21 @@ public class StudentStatCommand extends Command {
         if (database.getUserConcurrentHashMap().get(protocol.getCurUserName()) instanceof Student){
             return new ErrorCommand(this.opcode); // err - not an Admin
         }
-        if (!database.getUserConcurrentHashMap().contains(this.studentUserName))
+        if (!database.getUserConcurrentHashMap().containsKey(this.studentUserName))
             return new ErrorCommand(this.opcode); // not had any student with this user name
         String studentStat = "Student: " + this.studentUserName + "\n";
         studentStat += "Courses: [";
         ConcurrentLinkedQueue<Short> registeredCourses =
-                ((Student) database.getUserConcurrentHashMap().get(protocol.getCurUserName())).getRegisteredCourses();
+                ((Student) database.getUserConcurrentHashMap().get(this.studentUserName)).getRegisteredCourses();
         if (registeredCourses.isEmpty())
             studentStat += "]";
         else {
             for (short courseNum : database.getCourses().keySet()) {
                 if (registeredCourses.contains(courseNum)) {
-                    studentStat += courseNum + ",";
+                    studentStat += courseNum + ", ";
                 }
             }
-            studentStat = studentStat.substring(0, studentStat.length() - 1);
+            studentStat = studentStat.substring(0, studentStat.length() - 2);
             studentStat += "]";
         }
 
