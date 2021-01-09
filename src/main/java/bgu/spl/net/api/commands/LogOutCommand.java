@@ -15,6 +15,10 @@ public class LogOutCommand extends Command {
         if (protocol.getCurUserName() == null && protocol.getCurPassword() == null) { // if no one logged in
             return new ErrorCommand(this.opcode); // err
         }
+        protocol.setCurUserName(null);
+        protocol.setCurPassword(null);
+        protocol.setShouldTerminate(true);
+
         return new AckCommand(this.opcode, null); //ack
 
     }

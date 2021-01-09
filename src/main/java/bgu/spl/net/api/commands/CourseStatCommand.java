@@ -17,6 +17,8 @@ public class CourseStatCommand extends Command {
         if (database.getUserConcurrentHashMap().get(protocol.getCurUserName()) instanceof Student){
             return new ErrorCommand(this.opcode); // err - not an Admin
         }
+        if (!database.getCourses().containsKey(this.courseNumber))
+            return new ErrorCommand(this.opcode); // err - no such course
         String courseStat = "Course: (" + this.courseNumber + ") " + database.getCourses().get(this.courseNumber).get(0) + "\n";
         if (database.getStudentInCourses().contains(this.courseNumber))
             courseStat += "Seat Available: " + database.getStudentInCourses().get(this.courseNumber).size() + "/";

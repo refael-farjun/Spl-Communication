@@ -22,7 +22,7 @@ public class StudentRegCommand extends Command {
                 return new ErrorCommand(this.opcode); // err already registered
             }
             if (database.getUserConcurrentHashMap().get(this.userName) instanceof Admin){
-                return new ErrorCommand(this.opcode); // err already registered
+                return new ErrorCommand(this.opcode); // err - admin try to registered as a student
             }
             database.addUser(new Student(this.userName, this.password));
 

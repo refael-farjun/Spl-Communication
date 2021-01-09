@@ -14,15 +14,16 @@ public class BGRSProtocol implements MessagingProtocol<Command> {
     }
     @Override
     public Command process(Command msg) {
-        if (msg instanceof LogOutCommand){
-            shouldTerminate = true;
-            curUserName = null;
-            curPassword = null;
-        }
+//        if (msg instanceof LogOutCommand){ // dont think need that - all will happened in the react()
+//            shouldTerminate = true;
+//            curUserName = null;
+//            curPassword = null;
+//        }
 
-        else if (msg instanceof LogInCommand){
+        if (msg instanceof LogInCommand){
             curUserName = ((LogInCommand) msg).getUserName();
             curPassword = ((LogInCommand) msg).getPassword();
+
         }
         return msg.react(this);
     }
@@ -33,6 +34,18 @@ public class BGRSProtocol implements MessagingProtocol<Command> {
 
     public String getCurUserName() {
         return curUserName;
+    }
+
+    public void setShouldTerminate(boolean shouldTerminate) {
+        this.shouldTerminate = shouldTerminate;
+    }
+
+    public void setCurPassword(String curPassword) {
+        this.curPassword = curPassword;
+    }
+
+    public void setCurUserName(String curUserName) {
+        this.curUserName = curUserName;
     }
 
     @Override

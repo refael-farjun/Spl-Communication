@@ -19,7 +19,7 @@ public class CourseRegCommand extends Command {
         this.opcode = 5;
     }
     @Override
-    public Command react(BGRSProtocol protocol) {
+    public synchronized Command react(BGRSProtocol protocol) { //  synchronized here OK ???????????????????????
         if (!database.getCourses().containsKey(this.courseNumber)){
             return new ErrorCommand(this.opcode); // err no such course
         }
