@@ -23,6 +23,7 @@ public class Database {
 	private HashMap<Short, ArrayList<String>> courses; // key is course number and the value is list of the rest details
 	private ConcurrentHashMap<String, User> userConcurrentHashMap;
 	private ConcurrentHashMap<Short, ArrayList<String>> studentInCourses;
+	private ArrayList<Short> coursesNum;
 
 
 	//to prevent user from creating new Database
@@ -30,8 +31,13 @@ public class Database {
 		// TODO: implement
 		this.userConcurrentHashMap = new ConcurrentHashMap<>();
 		this.studentInCourses = new ConcurrentHashMap<>();
+		this.coursesNum = new ArrayList<>();
 		initialize("/home/spl211/Assignment3/Courses.txt");
 
+	}
+
+	public ArrayList<Short> getCoursesNum() {
+		return coursesNum;
 	}
 
 	public ConcurrentHashMap<Short, ArrayList<String>> getStudentInCourses() {
@@ -75,6 +81,7 @@ public class Database {
 					i++;
 				}
 				short number = Short.parseShort(num);
+				this.coursesNum.add(number);
 				courses.put(number, new ArrayList<>());
 				String str = "";
 				for (int j = i + 1; j < line.length(); j++){ // add values in the array list

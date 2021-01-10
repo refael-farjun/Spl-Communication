@@ -14,6 +14,9 @@ public class CourseStatCommand extends Command {
     }
     @Override
     public Command react(BGRSProtocol protocol) {
+        if (protocol.getCurUserName() == null && protocol.getCurPassword() == null) { // if no one logged in
+            return new ErrorCommand(this.opcode); // err
+        }
         if (database.getUserConcurrentHashMap().get(protocol.getCurUserName()) instanceof Student){
             return new ErrorCommand(this.opcode); // err - not an Admin
         }
@@ -28,9 +31,9 @@ public class CourseStatCommand extends Command {
         courseStat += "Students Registered: [" ;
         if (database.getStudentInCourses().containsKey(this.courseNumber)){
             for (String userName : database.getStudentInCourses().get(this.courseNumber)){
-                courseStat += userName + ", ";
+                courseStat += userName + ",";
             }
-            courseStat = courseStat.substring(0, courseStat.length() - 2);
+            courseStat = courseStat.substring(0, courseStat.length() - 1);
         }
 
         courseStat += "]";

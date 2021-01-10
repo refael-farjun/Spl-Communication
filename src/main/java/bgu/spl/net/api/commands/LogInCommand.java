@@ -23,7 +23,7 @@ public class LogInCommand extends Command {
     }
 
     @Override
-    public Command react(BGRSProtocol protocol) {
+    public synchronized Command react(BGRSProtocol protocol) {
         if (!database.getUserConcurrentHashMap().containsKey(this.userName)){ // if nor register
             return new ErrorCommand(this.opcode); // err
 

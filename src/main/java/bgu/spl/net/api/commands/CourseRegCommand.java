@@ -20,6 +20,10 @@ public class CourseRegCommand extends Command {
     }
     @Override
     public synchronized Command react(BGRSProtocol protocol) { //  synchronized here OK ???????????????????????
+        if (protocol.getCurUserName() == null && protocol.getCurPassword() == null) { // if no one logged in
+            return new ErrorCommand(this.opcode); // err
+        }
+
         if (!database.getCourses().containsKey(this.courseNumber)){
             return new ErrorCommand(this.opcode); // err no such course
         }
@@ -27,9 +31,13 @@ public class CourseRegCommand extends Command {
             return new ErrorCommand(this.opcode); // err admin cant register to courses
         }
         //TODO data structure or decrement the max student - for seat open
-        else if (database.getStudentInCourses().contains(this.courseNumber) &&
+        else if (database.getStudentInCourses().containsKey(this.courseNumber) &&
                 database.getStudentInCourses().get(this.courseNumber).size() >= getMaxSeat()){
             return new ErrorCommand(this.opcode); // err there is no seat left
+        }
+        else if (((Student) database.getUserConcurrentHashMap().get(protocol.getCurUserName()))
+                .getRegisteredCourses().contains(this.courseNumber)){
+            return new ErrorCommand(this.opcode); // err - the student already registered to that course
         }
 
         else {
