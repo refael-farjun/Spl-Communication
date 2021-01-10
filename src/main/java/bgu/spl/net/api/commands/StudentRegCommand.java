@@ -10,8 +10,10 @@ public class StudentRegCommand extends Command {
     String password;
 
     public StudentRegCommand(String userName, String password){
-        this.userName = userName;
-        this.password = password;
+        synchronized (this){
+            this.userName = userName;
+            this.password = password;
+        }
         this.opcode = 2;
     }
 
@@ -29,7 +31,8 @@ public class StudentRegCommand extends Command {
             return new ErrorCommand(this.opcode); // err - admin try to registered as a student
         }
         database.addUser(new Student(this.userName, this.password));
-
-        return new AckCommand(this.opcode, null);
+//        database.getIsLogInConcurrentHashMap().put(this.userName, false);
+//        database.setSoneoneIsLogIn(true);
+            return new AckCommand(this.opcode, null);
     }
 }

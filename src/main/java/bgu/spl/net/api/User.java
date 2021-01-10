@@ -6,8 +6,10 @@ public abstract class User {
     private String userName;
 
     public User(String userName, String password) {
-        this.userName = userName;
-        this.password = password;
+        synchronized (this){
+            this.userName = userName;
+            this.password = password;
+        }
         this.isLoggedIn = false;
     }
     public String getUserName(){
@@ -19,10 +21,10 @@ public abstract class User {
     public boolean isLoggedIn(){
         return this.isLoggedIn;
     }
-    public void logIn(){
+    public synchronized void logIn(){
         this.isLoggedIn = true;
     }
-    public void logOut(){
+    public synchronized void logOut(){
         this.isLoggedIn = false;
     }
 

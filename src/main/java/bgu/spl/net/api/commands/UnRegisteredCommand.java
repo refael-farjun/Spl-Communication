@@ -13,7 +13,7 @@ public class UnRegisteredCommand extends Command {
         this.opcode = 10;
     }
     @Override
-    public Command react(BGRSProtocol protocol) {
+    public synchronized Command react(BGRSProtocol protocol) {
         if (protocol.getCurUserName() == null && protocol.getCurPassword() == null) { // if no one logged in
             return new ErrorCommand(this.opcode); // err
         }

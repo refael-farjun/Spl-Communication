@@ -12,7 +12,7 @@ public class Student extends User{
     public ConcurrentLinkedQueue<Short> getRegisteredCourses() {
         return registeredCourses;
     }
-    public void registerToCourse(Short course){
+    public synchronized void registerToCourse(Short course){
         this.registeredCourses.add(course);
     }
 }

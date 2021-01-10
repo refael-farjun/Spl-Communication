@@ -24,16 +24,30 @@ public class Database {
 	private ConcurrentHashMap<String, User> userConcurrentHashMap;
 	private ConcurrentHashMap<Short, ArrayList<String>> studentInCourses;
 	private ArrayList<Short> coursesNum;
+	private boolean soneoneIsLogIn;
 
 
 	//to prevent user from creating new Database
 	private Database() {
-		// TODO: implement
 		this.userConcurrentHashMap = new ConcurrentHashMap<>();
 		this.studentInCourses = new ConcurrentHashMap<>();
 		this.coursesNum = new ArrayList<>();
+		this.soneoneIsLogIn = false;
 		initialize("/home/spl211/Assignment3/Courses.txt");
 
+	}
+
+//	public ConcurrentHashMap<String, Boolean> getIsLogInConcurrentHashMap() {
+//		return IsLogInConcurrentHashMap;
+//	}
+
+
+	public boolean isSoneoneIsLogIn() {
+		return soneoneIsLogIn;
+	}
+
+	public synchronized void setSoneoneIsLogIn(boolean soneoneIsLogIn) {
+		this.soneoneIsLogIn = soneoneIsLogIn;
 	}
 
 	public ArrayList<Short> getCoursesNum() {
@@ -48,7 +62,7 @@ public class Database {
 		return this.courses;
 	}
 
-	public void addUser(User user) {
+	public synchronized void addUser(User user) {
 		userConcurrentHashMap.put(user.getUserName(), user);
 	}
 	public ConcurrentHashMap<String, User> getUserConcurrentHashMap(){

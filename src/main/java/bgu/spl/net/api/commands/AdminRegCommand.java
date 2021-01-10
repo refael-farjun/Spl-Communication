@@ -10,8 +10,11 @@ public class AdminRegCommand extends Command {
     String password;
 
     public AdminRegCommand(String userName, String password){
-        this.userName = userName;
-        this.password = password;
+        synchronized (this){
+            this.userName = userName;
+            this.password = password;
+        }
+
         this.opcode = 1;
 
     }
@@ -27,7 +30,9 @@ public class AdminRegCommand extends Command {
             return new ErrorCommand(this.opcode); // err
         }
         database.addUser(new Admin(this.userName, this.password));
+//        database.getIsLogInConcurrentHashMap().put(this.userName, false);
 
+//        database.setSoneoneIsLogIn(true);
         return new AckCommand(this.opcode, null); // ack
     }
 }

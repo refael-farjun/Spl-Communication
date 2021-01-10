@@ -21,8 +21,11 @@ public class BGRSProtocol implements MessagingProtocol<Command> {
 //        }
 
         if (msg instanceof LogInCommand){
-            curUserName = ((LogInCommand) msg).getUserName();
-            curPassword = ((LogInCommand) msg).getPassword();
+            synchronized (this){
+                curUserName = ((LogInCommand) msg).getUserName();
+                curPassword = ((LogInCommand) msg).getPassword();
+            }
+
 
         }
         return msg.react(this);
@@ -36,15 +39,15 @@ public class BGRSProtocol implements MessagingProtocol<Command> {
         return curUserName;
     }
 
-    public void setShouldTerminate(boolean shouldTerminate) {
+    public synchronized void setShouldTerminate(boolean shouldTerminate) {
         this.shouldTerminate = shouldTerminate;
     }
 
-    public void setCurPassword(String curPassword) {
+    public synchronized void setCurPassword(String curPassword) {
         this.curPassword = curPassword;
     }
 
-    public void setCurUserName(String curUserName) {
+    public synchronized void setCurUserName(String curUserName) {
         this.curUserName = curUserName;
     }
 

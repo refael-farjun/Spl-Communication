@@ -9,21 +9,26 @@ public class LogInCommand extends Command {
     String password;
 
     public LogInCommand(String userName, String password){
-        this.userName = userName;
-        this.password = password;
+        synchronized (this){
+            this.userName = userName;
+            this.password = password;
+        }
         this.opcode = 3;
     }
 
-    public String getPassword() {
+    public synchronized String getPassword() {
         return password;
     }
 
-    public String getUserName() {
+    public synchronized String getUserName() {
         return userName;
     }
 
     @Override
     public synchronized Command react(BGRSProtocol protocol) {
+//        if (database.isSoneoneIsLogIn())
+//            return new ErrorCommand(this.opcode); // err - someone ALREADY LOGIN
+
         if (!database.getUserConcurrentHashMap().containsKey(this.userName)){ // if nor register
             return new ErrorCommand(this.opcode); // err
 
@@ -35,6 +40,10 @@ public class LogInCommand extends Command {
             return new ErrorCommand(this.opcode); // err - ALREADY LOGIN
         }
         database.getUserConcurrentHashMap().get(this.userName).logIn();
+//        database.getIsLogInConcurrentHashMap().put(this.userName, true);
+
+//        database.setSoneoneIsLogIn(true);
+
 
         return new AckCommand(this.opcode, null); // ack
     }
